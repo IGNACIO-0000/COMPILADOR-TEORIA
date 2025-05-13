@@ -1,1 +1,6 @@
+INTRUCCIONES PARA USAR EL COMPILADOR
+1. IDENTIFICACION DE LOS ARCHIVOS
+-Compilador_Teoria.py : Es el codigo del compilador donde almacena su analizador lexico ,sintatico , semantico
+-Contenedor_code.txt : hay se copia cuaquier codigo python y Compilador_Teoria.py lo analiza
+- Palabras_Reservadas : algunas palabras del propio lenguaje python
 
