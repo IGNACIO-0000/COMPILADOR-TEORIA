@@ -4,3 +4,5 @@ INTRUCCIONES PARA USAR EL COMPILADOR
 -Contenedor_code.txt : hay se copia cuaquier codigo python y Compilador_Teoria.py lo analiza
 - Palabras_Reservadas : algunas palabras del propio lenguaje python
 
+2. para Ejecutar el programa se sugiere tener los 3 archivos en una misma carpeta para que leea el codigo fuente como las palabras
+reservadas
