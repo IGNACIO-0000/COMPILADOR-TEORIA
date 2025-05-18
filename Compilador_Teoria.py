@@ -1,137 +1,177 @@
-# CLEAR PALABRAS RESERVADAS
-def CLEAR_LIST_RESERVADAS (LIMPIADOR):
-    i = 0
-    LIST_CLEAR = []
+# Función para limpiar la lista de palabras reservadas eliminando el carácter de nueva línea
+def limpiar_lista_reservadas(lista_con_saltos_de_linea):
+    """
+    Elimina los caracteres de nueva línea al final de cada cadena en la lista.
 
-    while i <= (len(LIMPIADOR) - 1):
-        CLEAR = LIMPIADOR[i].rstrip('\n') 
-        LIST_CLEAR.append(CLEAR)
-        i = i + 1
+    Args:
+        lista_con_saltos_de_linea (list): Lista de strings que pueden contener '\n' al final.
 
-    return LIST_CLEAR  # RETORNA A LA FUNCION ALASIS LEXICO LA LISTA DE PALABRAS RESERVADAS SIN EL \n 
+    Returns:
+        list: Una nueva lista de strings sin el carácter '\n' al final.
+    """
+    lista_limpia = []
+    for elemento in lista_con_saltos_de_linea:
+        lista_limpia.append(elemento.rstrip('\n'))
+    return lista_limpia
 
+# -------------------- ANALIZADORES --------------------
 
-#ANALIZADORES
+def analisis_lexico(lista_de_lineas):
+    """
+    Realiza el análisis léxico de una lista de líneas de código fuente.
 
-#FUNCION ANALISIS LEXICO
-def ANALISIS_LIXICO(LIST):
-    LIST_IN_LEXICO = LIST
-    LIST_DEPURADA = []
-    LIST_TOKEN = []
-     
-    #PRIMERA FASE PARA DEPURAR COMENTARIOS Y ESPACIOS
+    Esta función identifica y extrae los tokens del código, ignorando comentarios y espacios en blanco.
+    También detecta paréntesis no cerrados.
+
+    Args:
+        lista_de_lineas (list): Lista de strings, donde cada string representa una línea del código fuente.
+
+    Returns:
+        list: Una lista de tokens identificados en el código fuente.
+    """
+    lista_depurada = []
+    tokens = []
+    parentesis_abiertos = 0
+
+    # Primera fase: Depurar comentarios y espacios en blanco
+    for linea in lista_de_lineas:
+        linea_sin_salto = linea.rstrip('\n')
+        if linea_sin_salto.startswith("#") or not linea_sin_salto:
+            continue  # Ignorar comentarios y líneas vacías
+        lista_depurada.append(linea_sin_salto)
+
+    # Segunda fase: Separar caracteres y formar tokens
+    caracteres = []
+    for linea in lista_depurada:
+        for caracter in linea:
+            if caracter != " ":
+                caracteres.append(caracter)
+
+    # Tercera fase: Armar tokens y clasificar identidad
     
-    #CICLO PARA DEPURAR COMENTARIOS Y ESPACIOS EN BLANCO
-    CONTADOR_DEPURADOR = 0
-    while CONTADOR_DEPURADOR <= (len(LIST_IN_LEXICO)-1): # CICLO PARA ELIMINAR ESPACIOS Y COMENTARIOS
-
-        #CONDICIONES DE UN COMMIT Y UN SPACE
-
-        if LIST_IN_LEXICO[CONTADOR_DEPURADOR][0] == "#" :
-            pass
-        elif LIST_IN_LEXICO[CONTADOR_DEPURADOR] == "\n":
-            pass
-          
-        else:
-            LINEA_DEPURADA = LIST_IN_LEXICO[CONTADOR_DEPURADOR].rstrip('\n') #ELIMINAMOS LOS SALTOS DE LINEA AL FINAL DE UNA CADENA
-            LIST_DEPURADA.append(LINEA_DEPURADA) #PROCESO PARA LLENAR LA LISTA LIMPIA
-
-        CONTADOR_DEPURADOR = CONTADOR_DEPURADOR + 1
-
-    #SEGUNDA FASE SEPARAR CARACTERES
-    
-    LISTA_CARACTERS = [] #LISTA PARA LOS CARACTERES 
-    CONTADOR_CHAR_1 = 0
-    CONTADOR_CHAR_2 = 0
-
-    while CONTADOR_CHAR_1 <= (len(LIST_DEPURADA)-1):
-        while  CONTADOR_CHAR_2 <= (len(LIST_DEPURADA[CONTADOR_CHAR_1])-1): #CONTADOR PARA ELIMINAR ESPACIOS Y ALMACENAR CARACTERES
-            if LIST_DEPURADA[CONTADOR_CHAR_1][CONTADOR_CHAR_2] != " ":
-                LISTA_CARACTERS.append(LIST_DEPURADA[CONTADOR_CHAR_1][CONTADOR_CHAR_2]) # LISTA CON SOLO CARACTERES
-            else:
-                pass 
-            CONTADOR_CHAR_2 = CONTADOR_CHAR_2 + 1   
-        
-        CONTADOR_CHAR_2 = 0        
-        CONTADOR_CHAR_1 = CONTADOR_CHAR_1 + 1
-
-
-
-    #FASE DE ARMAR TOKENS Y CLASIFICACION DE IDENTIDAD 
-    TOKEN = []
-    CONTADOR_TOKEN = 0
-    TOKEN_RECOLECTOR_STRING = ""
-    TOKEN_RECOLECTOR_NUMEROS = ""
-    
-    
-    #CICLO PARA CONTRUIR LOS TOKENS
-
     print("*** SECUENCIA DE TOKENS ***")
-    print("""***************************
+    print("***************************\n")
 
-        """)
-    while CONTADOR_TOKEN <= (len(LISTA_CARACTERS)-1):
-        
-        #CONDICION PARA ALMACENAR OPERADORES
-        if(LISTA_CARACTERS[CONTADOR_TOKEN] == "=") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "+") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "-") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "*") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "**") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "//") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "/"):
-           TOKEN.append(LISTA_CARACTERS[CONTADOR_TOKEN]) 
+    recolector_string = ""
+    recolector_numeros = ""
+    i = 0
+    while i < len(caracteres):
+        caracter_actual = caracteres[i]
 
-        elif(LISTA_CARACTERS[CONTADOR_TOKEN] == ".") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "(") or (LISTA_CARACTERS[CONTADOR_TOKEN] == ")") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "[") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "]"):
-            TOKEN.append(LISTA_CARACTERS[CONTADOR_TOKEN])
-        
-        elif (LISTA_CARACTERS[CONTADOR_TOKEN] == "1") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "2") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "3") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "4") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "5") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "6") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "7") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "8") or (LISTA_CARACTERS[CONTADOR_TOKEN] == "9"):
-            TOKEN_RECOLECTOR_NUMEROS += (LISTA_CARACTERS[CONTADOR_TOKEN])
-            TOKEN.append(TOKEN_RECOLECTOR_NUMEROS)
+        if caracter_actual == '(':
+            parentesis_abiertos += 1
+            if recolector_string:
+                tokens.append(recolector_string)
+                recolector_string = ""
+            if recolector_numeros:
+                tokens.append(recolector_numeros)
+                recolector_numeros = ""
+            tokens.append(caracter_actual)
+        elif caracter_actual == ')':
+            parentesis_abiertos -= 1
+            if recolector_string:
+                tokens.append(recolector_string)
+                recolector_string = ""
+            if recolector_numeros:
+                tokens.append(recolector_numeros)
+                recolector_numeros = ""
+            tokens.append(caracter_actual)
+        elif caracter_actual in ["=", "+", "-", "*", "/", "[", "]", "."]:
+            if recolector_string:
+                tokens.append(recolector_string)
+                recolector_string = ""
+            if recolector_numeros:
+                tokens.append(recolector_numeros)
+                recolector_numeros = ""
+            tokens.append(caracter_actual)
+        elif caracter_actual.isdigit():
+            recolector_numeros += caracter_actual
+        elif caracter_actual.isalpha():
+            if recolector_numeros:
+                tokens.append(recolector_numeros)
+                recolector_numeros = ""
+            recolector_string += caracter_actual
         else:
-            
-            TOKEN_RECOLECTOR_STRING += LISTA_CARACTERS[CONTADOR_TOKEN] 
-            TOKEN.append(TOKEN_RECOLECTOR_STRING) 
+            print(f"Advertencia: Carácter desconocido '{caracter_actual}' ignorado.")
 
-        CONTADOR_TOKEN += 1
-        TOKEN_RECOLECTOR_NUMEROS = ""
-        TOKEN_RECOLECTOR_STRING = ""
-        print (TOKEN)
+        i += 1
 
-            
-    return TOKEN
+    # Agregar cualquier recolector pendiente al final
+    if recolector_string:
+        tokens.append(recolector_string)
+    if recolector_numeros:
+        tokens.append(recolector_numeros)
 
-#FUNCION ANALISIS SINTACTICO
-def ANALISIS_SINTACTICO(LIST_TOKEN):
-        
-    #VARIABLES ANALIZADOR SINTACTICO
-    TOKEN_SINTACTICO = LIST_TOKEN
-    ALMACENAMIENTO_SICTACTICO_1 = ""
-    ALMACENAMIENTO_SICTACTICO_2 = ""
-    CONTADOR_SINTACTICO = 0
+    if parentesis_abiertos > 0:
+        print("\n--- ERROR LÉXICO DETECTADO ---")
+        print("Error: Se encontraron paréntesis '(' sin cerrar.")
+        return None  # Indica que hubo un error léxico
+    elif parentesis_abiertos < 0:
+        print("\n--- ERROR LÉXICO DETECTADO ---")
+        print("Error: Se encontraron paréntesis ')' de cierre sin apertura.")
+        return None  # Indica que hubo un error léxico
+    else:
+        print(tokens)
+        return tokens
 
-    #CONSTRUCCION DE LA GRAMATICA TIPO 2
-    while CONTADOR_SINTACTICO <= (len(TOKEN_SINTACTICO)-1):
+def analisis_sintactico(lista_de_tokens):
+    """
+    Realiza un análisis sintáctico básico de la lista de tokens.
 
-        if (TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "x") or (TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "y") or (TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "z") or (TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "w"):
-            ALMACENAMIENTO_SICTACTICO_1 += "variable "
-            ALMACENAMIENTO_SICTACTICO_2 += TOKEN_SINTACTICO[CONTADOR_SINTACTICO]
+    Esta función intenta identificar la estructura gramatical simple basada en los tokens.
 
-        elif(TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "=") or (TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "(") or (TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == ")"):
-            ALMACENAMIENTO_SICTACTICO_1 += "operador "
-            ALMACENAMIENTO_SICTACTICO_2 += TOKEN_SINTACTICO[CONTADOR_SINTACTICO]
+    Args:
+        lista_de_tokens (list): Lista de tokens generados por el análisis léxico.
 
-        elif(TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "+") or (TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "-") or (TOKEN_SINTACTICO[CONTADOR_SINTACTICO] == "*"):
-            ALMACENAMIENTO_SICTACTICO_1 += "operador "
-            ALMACENAMIENTO_SICTACTICO_2 += TOKEN_SINTACTICO[CONTADOR_SINTACTICO]    
+    Returns:
+        None
+    """
+    if lista_de_tokens is None:
+        print("\nAnálisis sintáctico omitido debido a errores léxicos.")
+        return
 
+    tokens_sintacticos = lista_de_tokens
+    almacenamiento_sintactico_tipos = ""
+    almacenamiento_sintactico_valores = ""
+
+    print ("\n*** GRAMATICA *** ")
+    print ("*****************\n")
+
+    for token in tokens_sintacticos:
+        if token in ["x", "y", "z", "w"]:
+            almacenamiento_sintactico_tipos += "variable "
+            almacenamiento_sintactico_valores += token + " "
+        elif token in ["=", "(", ")", "+", "-", "*", "/", "**", "//", "[", "]"]:
+            almacenamiento_sintactico_tipos += "operador "
+            almacenamiento_sintactico_valores += token + " "
+        elif token.isdigit():
+            almacenamiento_sintactico_tipos += "num "
+            almacenamiento_sintactico_valores += token + " "
         else:
-            ALMACENAMIENTO_SICTACTICO_1 += "num "
-            ALMACENAMIENTO_SICTACTICO_2 += TOKEN_SINTACTICO[CONTADOR_SINTACTICO]  
+            almacenamiento_sintactico_tipos += "identificador "
+            almacenamiento_sintactico_valores += token + " "
 
-        CONTADOR_SINTACTICO += 1
+    print (almacenamiento_sintactico_tipos ,"\n")
+    print (almacenamiento_sintactico_valores)
 
-    # MENSAJE DE LA DERIVADA GRAMATICA
-    print ("\n","*** GRAMATICA *** ","\n","*****************","\n","\n",ALMACENAMIENTO_SICTACTICO_1 ,"\n","\n",ALMACENAMIENTO_SICTACTICO_2)
-             
-    return
-    #Analizador semantico
-     
-  def ANALISIS_SEMANTICO(lista_tokens, palabras_reservadas):
+def analisis_semantico(lista_de_tokens, palabras_reservadas):
+    """
+    Realiza un análisis semántico básico para detectar errores relacionados con el uso de variables.
+
+    Verifica si las variables se usan antes de ser declaradas (implícitamente en este caso)
+    y si se utilizan palabras reservadas como nombres de variables.
+
+    Args:
+        lista_de_tokens (list): Lista de tokens generados por el análisis léxico.
+        palabras_reservadas (list): Lista de palabras que no pueden ser usadas como nombres de variables.
+
+    Returns:
+        None
+    """
+    if lista_de_tokens is None:
+        print("\nAnálisis semántico omitido debido a errores léxicos.")
+        return
+
     variables_declaradas = set()
     errores = []
     i = 0
@@ -139,50 +179,51 @@ def ANALISIS_SINTACTICO(LIST_TOKEN):
     print("\n*** ANÁLISIS SEMÁNTICO ***")
     print("***************************\n")
 
-    while i < len(lista_tokens):
-        token = lista_tokens[i]
+    while i < len(lista_de_tokens):
+        token = lista_de_tokens[i]
 
-        # Verifica si es identificador potencial (ni operador ni número)
-        if token not in ['=', '+', '-', '*', '/', '(', ')'] and not token.isdigit():
+        # Verifica si es un identificador potencial
+        if token.isalpha():
             if token in palabras_reservadas:
                 errores.append(f"Error semántico: '{token}' no puede usarse como nombre de variable (palabra reservada).")
-            elif i + 1 < len(lista_tokens) and lista_tokens[i+1] == '=':
+            elif i + 1 < len(lista_de_tokens) and lista_de_tokens[i+1] == '=':
                 print(f"Declaración: La variable '{token}' ha sido declarada.")
                 variables_declaradas.add(token)
             elif token not in variables_declaradas:
-                errores.append(f"Error semántico: La variable '{token}' se usó sin declararse previamente.")
-            else:
-                print(f"Uso correcto: La variable '{token}' ha sido usada correctamente.")
+                errores.append(f"Error semántico: La variable '{token}' se usó sin ser declarada (implícitamente).")
 
         i += 1
 
     if errores:
         print("\n--- ERRORES SEMÁNTICOS DETECTADOS ---")
-        for e in errores:
-            print(e)
+        for error in errores:
+            print(error)
     else:
         print("\nAnálisis semántico exitoso: No se encontraron errores.")
 
-#***************************************************************************************
-#CODIGO FUENTE
+# ***************************************************************************************
+# CODIGO FUENTE
 
-#VARIABLES CODIGO
-BOOK_CODE = open ("Contenedor_code.txt" , "r") # ABRIMOS EL CODIGO
-LIST_BOOK_CODE = BOOK_CODE.readlines() # GUARDAMOS LAS LINEAN EN UN VECTOR
+try:
+    with open("Contenedor_code.txt", "r") as archivo_codigo:
+        lista_codigo_fuente = archivo_codigo.readlines()
+except FileNotFoundError:
+    print("Error: No se pudo encontrar el archivo 'Contenedor_code.txt'")
+    exit()
 
-BOOK_PALABRAS_RESERVADAS = open("Palabras_Reservadas.txt" , "r") # ARCHIVO PALABRAS RESERVADAS
-LIST_RESERVADAS = BOOK_PALABRAS_RESERVADAS.readlines() #VECTOR PALABRAS RESERVADASbS
+try:
+    with open("Palabras_Reservadas.txt", "r") as archivo_reservadas:
+        lista_palabras_reservadas_con_salto = archivo_reservadas.readlines()
+except FileNotFoundError:
+    print("Error: No se pudo encontrar el archivo 'Palabras_Reservadas.txt'")
+    exit()
 
-#LISTA DE PALABRAS RESERVADAS 
-PALABRAS_RESERVADAS = CLEAR_LIST_RESERVADAS(LIST_RESERVADAS)
+# Lista de palabras reservadas limpias
+palabras_reservadas = limpiar_lista_reservadas(lista_palabras_reservadas_con_salto)
 
-#LLAMADAS DE ANALIZADORES
+# Llamadas de los analizadores
+tokens_lexico = analisis_lexico(lista_codigo_fuente)
 
-TO_GO_LEXICO = ANALISIS_LIXICO(LIST_BOOK_CODE) # ENVIAMOS EL VECTOR A ANALISIS LEXICO
-TO_GO_SINTACTICO = ANALISIS_SINTACTICO(TO_GO_LEXICO)
-TO_GO_SEMANTICO= ANALISIS_SEMANTICO(TO_GO_LEXICO, PALABRAS_RESERVADAS)
-
-         
-BOOK_CODE.close()
-BOOK_PALABRAS_RESERVADAS.close()
-
+if tokens_lexico is not None:  # Solo realizar los siguientes análisis si no hubo errores léxicos
+    analisis_sintactico(tokens_lexico)
+    analisis_semantico(tokens_lexico, palabras_reservadas)
